@@ -6,7 +6,7 @@ tags:
   env: production
 properties:
   # replace with your managed environment id
-  managedEnvironmentId: /subscriptions/82f6d75e-85f4-434a-ab74-5dddd9fa8910/resourceGroups/rg-aca/providers/Microsoft.App/managedEnvironments/aca-environment
+  managedEnvironmentId: /subscriptions/5b8a43bc-2c2f-4fdb-b92f-56df33d1f950/resourceGroups/rg-aca-demo/providers/Microsoft.App/managedEnvironments/containerapps-album
   configuration:
     activeRevisionsMode: Multiple
     secrets:
@@ -15,7 +15,7 @@ properties:
     ingress:
       external: true
       allowInsecure: false
-      targetPort: 80
+      targetPort: 8080
       traffic:
         - latestRevision: true
           weight: 100
@@ -30,13 +30,13 @@ properties:
     #   appProtocol: http
     #   enabled: true
   template:
-    revisionSuffix: myrevision
+    revisionSuffix: myrevision3
     containers:
       - image: mcr.microsoft.com/dotnet/samples:aspnetapp
         name: aspnetapp
         env:
           - name: HTTP_PORT
-            value: 80
+            value: 8080
           - name: secret_name
             secretRef: mysecret
         # command:
@@ -49,7 +49,7 @@ properties:
           - type: liveness
             httpGet:
               path: "/"
-              port: 80
+              port: 8080
               # httpHeaders:
               #   - name: "Custom-Header"
               #     value: "liveness probe"
@@ -57,7 +57,7 @@ properties:
             periodSeconds: 3
           - type: readiness
             tcpSocket:
-              port: 80
+              port: 8080
             initialDelaySeconds: 10
             periodSeconds: 3
           # - type: startup
